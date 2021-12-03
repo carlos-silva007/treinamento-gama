@@ -22,7 +22,6 @@ public class Exercicio07 {
                 } else {
                     System.out.println("Desconto 30% ");
                 }
-
             }
         }
         entrada.close();
