@@ -3,7 +3,7 @@ package exercicios.exercicios02;
 public class Veiculo {
     String modelo;
     String marca;
-    double consumo;
+    private double consumo;
 
     Veiculo(String modelo, String marca, double consumo) {
         this.modelo = modelo;
@@ -18,8 +18,9 @@ public class Veiculo {
     double obterConsumo() {
         return consumo;
     }
-    public void alterarConsumo(double novoConsumo){
-        if(novoConsumo > 0){
+
+    public void alterarConsumo(double novoConsumo) {
+        if (novoConsumo > 0) {
             consumo = novoConsumo;
         }
     }
