@@ -7,9 +7,9 @@ public class Professor extends Pessoa {
         super(nome, telefone);
         this.salario = salario;
     }
-
-    public String getDados() {
-        return super.getDados() + " - " + salario;
+@Override //indica que esse metode é uma sobreescrita
+    public String toString() {
+        return super.toString() + " - " + salario;
     }
 }
     
