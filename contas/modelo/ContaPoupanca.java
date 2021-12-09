@@ -1,15 +1,15 @@
 package modelo;
 
 public class ContaPoupanca extends Conta {
-    private double taxaOperacao;
+    private static double taxaOperacao = 0.2; //static= atributo da classe
 
     public ContaPoupanca(int numero) {
         super(numero);
-
+        
     }
 
-    public void setTaxa(double novaTaxa) {
-        this.taxaOperacao = novaTaxa;
+    public static void setTaxa(double novaTaxa) { //metodo da classe
+        taxaOperacao = novaTaxa;
 
     }
 

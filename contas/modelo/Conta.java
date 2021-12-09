@@ -1,6 +1,6 @@
 package modelo;
 
-public class Conta {
+public abstract class  Conta { //abstract = modelo nao gera objeto dela
     private int numero;
     private double saldo;
 
