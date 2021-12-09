@@ -1,23 +1,16 @@
-import java.util.ArrayList;
+
 import java.util.Scanner;
 
-import modelo.Conta;
-import modelo.ContaCorrente;
-import modelo.ContaEspecial;
-import modelo.ContaPoupanca;
+import dados.GerenciaContasHash;
 
 public class AppContas {
 
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         int opcao = 0, numeroConta;
-        double limite;
+        double limite, valor;
 
-        ContaCorrente cc = null;
-        ContaPoupanca cp = null;
-        ContaEspecial cs = null;
-
-        ArrayList<Conta> contas = new ArrayList<>();
+        GerenciaContasHash contas = new GerenciaContasHash();
 
         while (opcao != 7) { // enquanto for diferente de 7 pra sair
 
@@ -29,54 +22,59 @@ public class AppContas {
             System.out.println("6 - Consultar Saldo");
             System.out.println("7 - Sair");
             System.out.print("Sua Opção => ");
+
             opcao = teclado.nextInt();
 
             switch (opcao) {
+
                 case 1:
                     System.out.println("Informe o numero da Conta: ");
                     numeroConta = teclado.nextInt();
-                    cc = new ContaCorrente(numeroConta);
-                    contas.add(cc);
+                    contas.novaContaCorrente(numeroConta);
                     break;
+
                 case 2:
                     System.out.println("Informe o numero da Conta: ");
                     numeroConta = teclado.nextInt();
                     System.out.println("Informe o valor do limite: ");
                     limite = teclado.nextDouble();
-                    cs = new ContaEspecial(numeroConta, limite);
-                    contas.add(cs);
+                    contas.novaContaEspecial(numeroConta, limite);
                     break;
+
                 case 3:
                     System.out.println("Informe o numero da Conta: ");
                     numeroConta = teclado.nextInt();
-                    cp = new ContaPoupanca(numeroConta);
-                    contas.add(cp);
+                    contas.novaContaPoupanca(numeroConta);
                     break;
-                case 4:
 
+                case 4:
+                    System.out.println("Informe o numero da Conta: ");
+                    numeroConta = teclado.nextInt();
+                    System.out.println("Informe o Valor");
+                    valor = teclado.nextDouble();
+                    if (contas.deposito(numeroConta, valor)) {
+                        System.out.println("Deposito Realizado");
+                    } else {
+                        System.out.println("Falha na Operação");
+                    }
                     break;
+
                 case 5:
+                    System.out.println("Informe o numero da Conta: ");
+                    numeroConta = teclado.nextInt();
+                    System.out.println("Informe o Valor");
+                    valor = teclado.nextDouble();
+                    if (contas.saque(numeroConta, valor)) {
+                        System.out.println("Saque Realizado");
+                    } else {
+                        System.out.println("Falha na Operação");
+                    }
 
                     break;
                 case 6:
                     System.out.println("Informe o numero da Conta: ");
                     numeroConta = teclado.nextInt();
-                    // for (int i = 0; i < contas.size(); i++) {
-                    /*
-                     * if (contas.get(i).getNumero() == numeroConta) {
-                     * 
-                     * System.out.println(contas.get(i));
-                     * break;
-                     */
-
-                    for (Conta conta : contas) {
-                        if (conta.getNumero() == numeroConta) {
-
-                            System.out.println(conta);
-                            break;
-
-                        }
-                    }
+                    System.out.println(contas.getSaldo(numeroConta));
 
                     break;
                 case 7:
@@ -89,8 +87,6 @@ public class AppContas {
             }
 
         }
-
         teclado.close();
     }
-
 }

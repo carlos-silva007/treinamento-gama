@@ -35,7 +35,7 @@ public abstract class  Conta { //abstract = modelo nao gera objeto dela
 
     @Override
     public String toString() {
-        return numero + ": " + saldo;
+        return numero + ": " + String.format("R$ %.2f", saldo);
     }
 
 }
