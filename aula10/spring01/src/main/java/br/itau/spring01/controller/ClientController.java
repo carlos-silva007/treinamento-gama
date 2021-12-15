@@ -3,6 +3,8 @@ package br.itau.spring01.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,8 +30,14 @@ public class ClientController {
 
     @GetMapping("/all") // rota/path seria o caminho que leva pra esse metodo
     public List<Client> listarTodos() {
-        List<Client> lista = (List<Client>) repo.findAll(); // findall retorna todos itens no BD
-        return lista;
+        List<Client> list = (List<Client>) repo.findAll(); // findall retorna todos itens no BD
+        return list;
+    }
+
+    @GetMapping("/list") // rota/path seria o caminho que leva pra esse metodo PAGINADO
+    public Page<Client> listarTodosPaginado(Pageable pageable) {
+        Page<Client> list = repo.findAll(pageable); // findall retorna todos itens no BD
+        return list;
     }
 
     @GetMapping("/{codigo}") // chaves indica uma variavel
