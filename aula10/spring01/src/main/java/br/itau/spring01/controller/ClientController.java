@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,16 +60,30 @@ public class ClientController {
         return ResponseEntity.ok(novoCliente);
     }
 
+    @PutMapping // atualizar
+    public ResponseEntity<Client> atualizarCliente(@RequestBody Client cliente) {
+        if (cliente.getCod() > 0) {
+            Client novoCliente = repo.save(cliente);
+            return ResponseEntity.ok(novoCliente);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/{codigo}")
     public ResponseEntity<Void> apagarCliente(@PathVariable long codigo) {
+        // antes de apagar, verificar se este cliente existe
         Client clienteEncontrado = repo.findById(codigo).orElse(null);
+        if (clienteEncontrado != null) { // achou cliente no BD,
+            try {
+                repo.deleteById(codigo);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        if (clienteEncontrado != null) {
-            repo.deleteById(codigo);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
         }
         return ResponseEntity.notFound().build();
-
     }
 
     @PostMapping("/email")

@@ -1,11 +1,16 @@
 package br.itau.spring01.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity // indica que esta classe sera armazenada no Banco de Dados
 @Table(name = "cliente") // nome da tabela no banco de dados
@@ -23,6 +28,11 @@ public class Client {
     @Column(name = "email", length = 100, nullable = false, unique = true)
     // unique = nao pode ter 2 emails iguais
     private String email;
+
+    @OneToMany(mappedBy = "owner") // um cliente pode ter varios veiculos //owner = atributo do veiculo que faz o
+                                   // relacionamento   --mappedby = mapear proprietario
+    @JsonIgnoreProperties("owner") // quando buscar os veiculos nao traga os proprietarios
+    private List<Vehicle> vehicles;
 
     public long getCod() {
         return cod;
@@ -48,4 +58,13 @@ public class Client {
         this.email = email;
     }
 
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(List<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
+    
 }
