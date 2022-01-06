@@ -5,20 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApiRest
 {
-    [Route("api/[controller]")]  //rota pra consulta http://localhost:5035/api/alunos
+    [Route("api/[controller]")]  //rota pra consulta http://localhost:5035/api/alunosplus
     [ApiController]
-    public class AlunosController : ControllerBase
+    public class AlunosPlusController : ControllerBase
     {
         private List<Aluno> listaAlunos;
 
-        public AlunosController()
+        public AlunosPlusController()
         {
             listaAlunos = new List<Aluno>();
             MontarListaAlunos();
         }
 
         private void MontarListaAlunos()
-        {            
+        {
             Aluno aluno = new Aluno();
             aluno.Nome = "Hary poter";
             aluno.Id = 13;
@@ -38,46 +38,53 @@ namespace ApiRest
             listaAlunos.Add(aluno);
             listaAlunos.Add(aluno2);
             listaAlunos.Add(aluno3);
-            listaAlunos.Add(aluno4);            
+            listaAlunos.Add(aluno4);
         }
 
 
-        // GET: api/<AlunosController>
+        // GET: api/<AlunosPlusController>
         [HttpGet]
-        public IEnumerable<Aluno> Get()
-        {            
-            return listaAlunos;
+        public IActionResult Get()
+        {
+            if(listaAlunos == null)
+                return NotFound();
+            else
+                return Ok(listaAlunos);
         }
 
-        // GET api/<AlunosController>/5
+        // GET api/<AlunosPlusController>/5
         [HttpGet("{id}")]
-        public Aluno Get(int id)
-        {            
-            //Consulta na relação de alunos        //lambda igual a um for
-            var alu = listaAlunos.FirstOrDefault(aluno => aluno.Id == id);            
-            if (alu == null) alu = new Aluno(); //retorna vazio sem erro
-            return alu;
+        public IActionResult Get(int id)
+        {
+            //Consulta na relação de alunos
+            var alu = listaAlunos.FirstOrDefault(a => a.Id == id);
+            if (alu == null)
+                return NotFound();
+            else
+                return Ok(alu);
         }
 
-        // POST api/<AlunosController>
-        [HttpPost]  //INSERIR ... 
-        public IEnumerable<Aluno> Post([FromBody] Aluno value)
+        // POST api/<AlunosPlusController>
+        [HttpPost]  //INSERIR ...
+        public IActionResult Post([FromBody] Aluno value)
         {
             listaAlunos.Add(value);
-            return listaAlunos;
+            return  Created($"/{value.Id}",listaAlunos);
         }
 
-        
-        // PUT api/<AlunosController>/13 -> Harry
-        [HttpPut("{id}")]
-        public IEnumerable<Aluno> Put(int id, [FromBody] Aluno value)
-        {
-            var elementoEncontrado = listaAlunos.Where(aluno => aluno.Id == id).First();
-            elementoEncontrado.Id = value.Id;
-            elementoEncontrado.Nome = value.Nome + "-Alterado";
-            elementoEncontrado.Telefone = value.Telefone;
 
-            return listaAlunos;
+        // PUT api/<AlunosPlusController>/13 -> Harry
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Aluno value)
+        {
+            var elementoEncontrado = listaAlunos.FirstOrDefault(a => a.Id == id);
+            if (elementoEncontrado == null)
+                return NotFound();
+            
+            elementoEncontrado.Id = value.Id;
+            elementoEncontrado.Nome = value.Nome;
+
+            return Ok(listaAlunos);
         }
 
         /*
@@ -94,13 +101,16 @@ namespace ApiRest
         */
 
 
-        // DELETE api/<AlunosController>/5
+        // DELETE api/<AlunosPlusController>/5
         [HttpDelete("{id}")]
-        public IEnumerable<Aluno> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            var elementoEncontrado = listaAlunos.Where(a => a.Id == id).First();
+            var elementoEncontrado = listaAlunos.FirstOrDefault(a => a.Id == id);
+            if (elementoEncontrado == null)
+                return NotFound();
+            
             listaAlunos.Remove(elementoEncontrado);
-            return listaAlunos;
+            return Ok(listaAlunos);
         }
     }
 }
