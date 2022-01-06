@@ -13,7 +13,7 @@ import br.itau.spring01.model.Client;
 //Crud = Create, Read, Update, Delete
 public interface ClientRepo extends CrudRepository<Client, Long> {
 
-    public Client findByEmail(String email);
+    public Client findByEmail(String email);  //um novo metodo pra buscar pelo email
 
     public Page<Client> findAll(Pageable pageable);  //modificacão findALL > metodo retorno paginado
 }
